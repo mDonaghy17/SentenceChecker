@@ -45,23 +45,25 @@ ValidityCheckTest(test9);
 public static void ValidityCheckTest(String test){
     System.out.println("Test sentence: "+test);
     System.out.print("The result: ");
-    ValidityCheck(test);  
+    CallTest(test);  
     System.out.println();
 }
 
 
+public static void CallTest(String userInput){
 
+ValidityCheckCapital(userInput);//1) String starts with a capital letter
 
-public static void ValidityCheck(String userInput){
+ValidityCheckQuotations(userInput);//2) String has an even number of quotation marks
 
-//++validity criteria list++
-//1) String starts with a capital letter
-//2) String has an even number of quotation marks
-//3) String ends with one of the following sentence termination characters ".", "?", "!"
-//4) String has no period characters other than the last character.
-//5) numbers below 13 are spelled out.
+ValidityCheckTermination(userInput);//3) String ends with one of the following sentence termination characters ".", "?", "!"
 
+ValidityCheckPeriod(userInput);//4) String has no period characters other than the last character.
 
+ValidityCheckNumber(userInput);//5) numbers below 13 are spelled out.
+}
+
+public static void ValidityCheckCapital(String userInput){
 //1)
 //need to get first letter to check if it is a capital (first character may not be a letter)
 char firstLetter =0;
@@ -77,45 +79,63 @@ char firstLetter =0;
     if(firstLetter != 0){
     if(Character.isUpperCase(firstLetter)==false){ //change to == later
         //SENTENCE IS NOT VALID
-        System.out.println("This sentence is invalid.");
+        System.out.println("This sentence is invalid, the first letter is not a capital letter.");
         return;
         
 
     }}else{//if a first letter can't be found then the sentence is not valid.
         //The sentenc is not valid
-        System.out.println("This sentence is invalid.");
+        System.out.println("This sentence is invalid, this sentence contains no letters.");
         return;
     }
+}
 
+
+public static void ValidityCheckQuotations(String userInput){
 //2) 
 //Checking how many quotation marks there is
-int noQuotationMarks=0;
+int noQuotationMarks=0; //for "
+int noQuotationMarks2=0; // for '
 for(int i=0; i<userInput.length();i++){
     if(userInput.charAt(i)=='"' ){
         noQuotationMarks++;
-    }        
+    } 
+    if(userInput.charAt(i)=='\'' ){
+        noQuotationMarks2++;
+    } 
+    
 }
 //check if there's an even amount of "
-if(noQuotationMarks%2!=0){
+if(noQuotationMarks%2!=0 && noQuotationMarks2%2!=0){
     //SENTENCE IS NOT VALID
-    System.out.println("This sentence is invalid.");
+    System.out.println("This sentence is invalid. There are not enough quotation marks.");
         return;
 }
 
+
+
+}
+
+
+public static void ValidityCheckTermination(String userInput){
 //3)
 //Checking the last character to ensure it is an approriate termination.
 if(userInput.charAt(userInput.length()-1)!='.' && userInput.charAt(userInput.length()-1)!='!'&& userInput.charAt(userInput.length()-1)!='?' ){
     //SENTENCE IS NOT VALID
-    System.out.println("This sentence is invalid.");
-        return;
+    System.out.println("This sentence is invalid. This sentence is not terminated with appropriatte punctuation.");
+       
 }
 
 
+}
+
+
+public static void ValidityCheckPeriod(String userInput){
 //4)
 //String has only one . 
 int noFullStops=0;
 
-for(int i=0; i<userInput.length()-1;i++){
+for(int i=0; i<userInput.length()-1;i++){ 
     if(userInput.charAt(i)=='.'){
              noFullStops++;
     }        
@@ -123,11 +143,13 @@ for(int i=0; i<userInput.length()-1;i++){
 
 if(noFullStops>0){
     //SENTENCE IS NOT VALID
-    System.out.println("This sentence is invalid.");
-        return;
+    System.out.println("This sentence is invalid. This sentence has too many full stops.");
+        
+}
 }
 
 
+public static void ValidityCheckNumber(String userInput){
 //5)
 //checking if numbers <13 are in a string format
 
@@ -139,28 +161,29 @@ for(int i=0; i<userInput.length();i++){
         numberCheckTemp = numberCheckTemp + String.valueOf(userInput.charAt(i));
         
     }else{ //once the number ends (once the next char is a string) it will take the string of numbers to validate whether it's less than 13
-       
+       if(userInput.charAt(i)!=','){ //ignores instances were numbers are formatted as 1,000.
+
         if(numberCheckTemp!=""){
         numberCheckTempInt = Integer.valueOf(numberCheckTemp);
         numberCheckTemp = "";
 
         if(-1<numberCheckTempInt && numberCheckTempInt<13){
             //SENTENCE IS NOT VALID
-            System.out.println("This sentence is invalid.");
+            System.out.println("This sentence is invalid.  Numbers aren't properly fomatted");
         return;
         }
         else{numberCheckTempInt=-1;}
 
             }
 
-    
+        }
 
 
     }
 
 }
 
-System.out.println("The sentence is valid.");
+
 }
 
 
